@@ -59,8 +59,8 @@ for i, frame_data in enumerate(simulation_generator):
 
 # Save as GIF
 print("Saving GIF...")
-imageio.mimsave('reaction_diffusion_animated.gif', images, fps=15)
-print("Animation saved as reaction_diffusion_animated.gif")
+imageio.mimsave('reaction_diffusion_animated_fps603.gif', images, fps=60)
+print("Animation saved as reaction_diffusion_animated_fps603.gif")
 
 # Clean up plot
 plt.close(fig)
