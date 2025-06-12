@@ -1,7 +1,6 @@
 [build]
-# The public-url is necessary for the assets to be found on GitHub Pages.
-# Replace `reaction-diffusion-rs` with the name of your GitHub repository.
-public_url = "/morphogen-rs/"
+# For Netlify deployment, the public_url should be the root.
+public_url = "/"
 dist = "docs"
 
 [serve]
