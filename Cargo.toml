@@ -1,7 +1,9 @@
+cargo-features = ["edition2024"]
+
 [package]
 name = "reaction-diffusion-rs"
 version = "0.1.0"
-edition = "2021"
+edition = "2024"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
@@ -9,3 +11,11 @@ edition = "2021"
 eframe = "0.27.2"
 ndarray = { version = "0.15.6", features = ["rayon"] }
 image = "0.25.1"
+log = "0.4"
+
+[target.'cfg(target_arch = "wasm32")'.dependencies]
+console_error_panic_hook = "0.1.7"
+tracing-wasm = "0.2"
+wasm-bindgen-futures = "0.4"
+wasm-bindgen-rayon = { version = "1.2", features = ["no-bundler"] }
+web-sys = { version = "0.3", features = ["Window", "Navigator"] }

@@ -1,0 +1,9 @@
+[build]
+# The public-url is necessary for the assets to be found on GitHub Pages.
+# Replace `reaction-diffusion-rs` with the name of your GitHub repository.
+public_url = "/morphogen-rs/"
+dist = "docs"
+
+[serve]
+# These headers are required for SharedArrayBuffer to work, which is needed for wasm-bindgen-rayon.
+headers = { Cross-Origin-Opener-Policy = "same-origin", Cross-Origin-Embedder-Policy = "require-corp" }

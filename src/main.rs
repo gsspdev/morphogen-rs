@@ -1,6 +1,6 @@
-use eframe::{egui, App, Frame};
+use eframe::{App, Frame, egui};
 use egui::{Color32, ColorImage, TextureHandle, TextureOptions};
-use ndarray::{par_azip, s, Array2};
+use ndarray::{Array2, par_azip, s};
 
 const WIDTH: usize = 256;
 const HEIGHT: usize = 256;
@@ -297,6 +297,10 @@ fn magma_color(t: f32) -> Color32 {
     Color32::from_rgb((r * 255.0) as u8, (g * 255.0) as u8, (b * 255.0) as u8)
 }
 
+#[cfg(target_arch = "wasm32")]
+use {wasm_bindgen_futures::JsFuture, web_sys};
+
+#[cfg(not(target_arch = "wasm32"))]
 fn main() -> Result<(), eframe::Error> {
     let options = eframe::NativeOptions {
         viewport: egui::ViewportBuilder::default().with_inner_size([1024.0, 768.0]),
@@ -307,4 +311,39 @@ fn main() -> Result<(), eframe::Error> {
         options,
         Box::new(|_cc| Box::<ReactionDiffusionApp>::default()),
     )
+}
+
+#[cfg(target_arch = "wasm32")]
+#[allow(non_snake_case)]
+fn main() {
+    // Make sure panics are logged using `console.error`.
+    console_error_panic_hook::set_once();
+
+    // Redirect tracing to console.log and friends:
+    tracing_wasm::set_as_global_default();
+
+    let web_options = eframe::WebOptions::default();
+
+    wasm_bindgen_futures::spawn_local(async {
+        let num_threads = web_sys::window()
+            .map(|win| win.navigator().hardware_concurrency() as usize)
+            .unwrap_or(4); // Default to 4 threads if not available
+
+        log::info!("Using {} threads for wasm.", num_threads);
+
+        // Convert the JS Promise to a Rust Future and await it.
+        let promise = wasm_bindgen_rayon::init_thread_pool(num_threads);
+        JsFuture::from(promise)
+            .await
+            .expect("failed to init thread pool");
+
+        eframe::WebRunner::new()
+            .start(
+                "the-canvas", // hardcode it
+                web_options,
+                Box::new(|_cc| Box::<ReactionDiffusionApp>::default()),
+            )
+            .await
+            .expect("failed to start eframe");
+    });
 }

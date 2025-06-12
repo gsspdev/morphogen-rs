@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>Reaction-Diffusion Explorer</title>
+    <style>
+        html,
+        body {
+            height: 100%;
+            margin: 0;
+            overflow: hidden;
+            background-color: #202020;
+            /* Dark background */
+        }
+
+        #the-canvas {
+            outline: none;
+            width: 100%;
+            height: 100%;
+        }
+    </style>
+<link rel="modulepreload" href="/morphogen-rs/reaction-diffusion-rs-412605159881b46a.js" crossorigin="anonymous" integrity="sha384-+O5vh6kf+Q1nPiu0zeeupURWvQCnCO0YzNjYm81wYOS9EhnscmegfJaxvnYTpoML"><link rel="modulepreload" href="/morphogen-rs/snippets/wasm-bindgen-rayon-38edf6e439f6d70d/src/workerHelpers.no-bundler.js" crossorigin="anonymous" integrity="sha384-j7NcrpDFbLLPOa0yBgc2md2vCVtdbqgxYFV02430LDxCtY6gatc3oC7MI8sBFulw"><link rel="preload" href="/morphogen-rs/reaction-diffusion-rs-412605159881b46a_bg.wasm" crossorigin="anonymous" integrity="sha384-EjXLipwPyNyKoTaR0rX8twYc2vywbrNHRUhAaCjZspsnx/5t/8jZhbNf/CHKFUOw" as="fetch" type="application/wasm"></head>
+
+<body>
+    <canvas id="the-canvas"></canvas>
+    <!-- Trunk will inject the necessary script tags here -->
+
+<script type="module">
+import init, * as bindings from '/morphogen-rs/reaction-diffusion-rs-412605159881b46a.js';
+const wasm = await init({ module_or_path: '/morphogen-rs/reaction-diffusion-rs-412605159881b46a_bg.wasm' });
+
+
+window.wasmBindings = bindings;
+
+
+dispatchEvent(new CustomEvent("TrunkApplicationStarted", {detail: {wasm}}));
+
+</script></body>
+
+</html>
